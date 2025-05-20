@@ -1,0 +1,6 @@
+plugin: constructed
+│   strict: false
+│   groups:
+│     ios: inventory_hostname in groups['all'] and hostvars[inventory_hostname].ansible_network_os == 'ios'
+│     junos: inventory_hostname in groups['all'] and hostvars[inventory_hostname].ansible_network_os == 'junos'
+│     eos: inventory_hostname in groups['all'] and hostvars[inventory_hostname].ansible_network_os == 'eos'
