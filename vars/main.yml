@@ -1,0 +1,3 @@
+│   backup_dir: backups/{{ inventory_hostname }}/{{ ansible_date_time.date }}
+│   git_push_enabled: true
+│   git_repo_path: "/path/to/your/git/repo"
