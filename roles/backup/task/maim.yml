@@ -1,0 +1,39 @@
+---
+│   - name: Create local backup directory
+│     file:
+│       path: "{{ backup_dir }}"
+│       state: directory
+│       recurse: yes
+│
+│   - name: Backup Cisco config
+│     ios_config:
+│       backup: yes
+│       backup_options:
+│         filename: "{{ backup_dir }}/{{ inventory_hostname }}.cfg"
+│     when: ansible_network_os == 'ios'
+│
+│   - name: Backup Juniper config
+│     junos_config:
+│       backup: yes
+│       dest: "{{ backup_dir }}/{{ inventory_hostname }}.conf"
+│     when: ansible_network_os == 'junos'
+│
+│   - name: Backup Arista config
+│     eos_config:
+│       backup: yes
+│       backup_options:
+│         filename: "{{ backup_dir }}/{{ inventory_hostname }}.cfg"
+│     when: ansible_network_os == 'eos'
+│
+│   - name: Commit backups to Git (optional)
+│     block:
+│       - name: Add and commit backup to Git
+│         command: "git add . && git commit -m 'Backup for {{ inventory_hostname }} on {{ ansible_date_time.iso8601 }}'"
+│         args:
+│           chdir: "{{ git_repo_path }}"
+│
+│       - name: Push to remote Git repo
+│         command: "git push"
+│         args:
+│           chdir: "{{ git_repo_path }}"
+│     when: git_push_enabled
